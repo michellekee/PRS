@@ -1,0 +1,26 @@
+# PRS
+Scripts for PRS
+
+
+spark-submit PRS_run.py IndianForPRS.dosages.vcf pgc_mdd_full_no_header.txt --GWAS_no_header PRS-MDD-IndianForPRSdosages --sample_file Indian.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " "  --gwas_id 0 --gwas_p 7 --gwas_or 5 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 10 --snp_log  --no_maf --log_or --thresholds 0.2 0.1 0.05
+
+
+
+
+
+
+
+PRS-resilience
+
+spark-submit PRS_run.py ChineseForPRS.vcf GWAS_Resilience_clumpByShantala_noambi.txt PRS-resilienceChinese --no_maf --sample_file Chinese.sample --thresholds 0.2 0.1 0.05 --snp_log --GWAS_delim "\t" --sample_file_skip 2 --sample_file_delim " "
+
+
+PRS-Nirmala (MDD)
+
+spark-submit PRS_run.py ChineseForPRS.vcf PRS_Amygdala.txt PRS-AmygdalaChinese --sample_file Chinese.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " "  --gwas_id 0 --gwas_p 7 --gwas_or 5 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 10 --snp_log  --no_maf --log_or --thresholds 0.2 0.1 0.05
+
+
+
+PRS-Nirmala(Anx)
+
+spark-submit PRS_run.py ChineseForPRS.vcf GWAS_Amygdala.txt PRS-Anx_Amygdala_Chinese —sampe_file Chinese.sample —sample_file_ID 0 —sample_file_skip 2 —sample_file_dlim “ “ —gwas_id 0 —gwas_p 8 —gwas_a1f 5 —gwas_or 6—snp_log —no_maf —thresholds 0.2 0.1 0.05
