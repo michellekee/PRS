@@ -24,3 +24,7 @@ spark-submit PRS_run.py ChineseForPRS.vcf PRS_Amygdala.txt PRS-AmygdalaChinese -
 PRS-Nirmala(Anx)
 
 spark-submit PRS_run.py ChineseForPRS.vcf GWAS_Amygdala.txt PRS-Anx_Amygdala_Chinese —sampe_file Chinese.sample —sample_file_ID 0 —sample_file_skip 2 —sample_file_dlim “ “ —gwas_id 0 —gwas_p 8 —gwas_a1f 5 —gwas_or 6—snp_log —no_maf —thresholds 0.2 0.1 0.05
+
+
+PRS-ASD (WorldWide - Mar 2016)
+spark-submit PRS_run.py AllEthnicIntersection.vcf PGC-ASD-WW-Mar2016.txt PRS-ASD-AllEthnicIntersection --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --gwas_id 2 --gwas_p 10 --gwas_or 5 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 11 --GWAS_delim "\t" --GWAS_no_header --snp_log --no_maf --log_or --thresholds 0.5 0.4 0.3 0.2 0.1 0.05
