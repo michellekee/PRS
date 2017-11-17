@@ -33,3 +33,11 @@ spark-submit PRS_run.py AllEthnicIntersection.vcf PGC-ASD-WW-Mar2016.txt PRS-ASD
 PRS-Depressive Symptomms 
 
 spark-submit PRS_run.py AllEthnicIntersection.vcf DS_Full.txt PRS-DepSymp-AllEthnicIntersection --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --gwas_id 0 --gwas_p 8 --gwas_or 6 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 5 --GWAS_delim "\t" --snp_log --no_maf --thresholds 0.5 0.4 0.3 0.2 0.1 0.05
+
+
+PRS-EA
+
+spark-submit PRS_run.py AllEthnicIntersection.vcf EduYears_Discovery_5000.txt PRS-EA-Dis-AllEthnicIntersection --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --gwas_id 0 --gwas_p 8 --gwas_or 6 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 5 --GWAS_delim "\t" --snp_log --no_maf --thresholds 0.5 0.4 0.3 0.2 0.1 0.05
+
+
+
