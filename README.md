@@ -43,7 +43,7 @@ spark-submit PRS_run.py AllEthnicIntersection.vcf EduYears_Discovery_5000.txt PR
 
 PRS-ADHD-LC
 
-spark-submit PRS_run.py AllEthnicIntersection.vcf GWAS_ADHD_zscore_withaf_full_noambi_Lawrence_custom171129.txt PRS-ADHD-LC-AllEthnicIntersection --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --GWAS_delim "\t" --thresholds 0.01 1.00 0.01 --no_maf --snp_log
+spark-submit PRS_run.py AllEthnicIntersection.vcf GWAS_ADHD_zscore_withaf_full_noambi_Lawrence_custom171129.txt PRS-ADHD-LC-AllEthnicIntersection --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --GWAS_delim "\t" --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log
 
 
 
