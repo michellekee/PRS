@@ -14,10 +14,9 @@ PRS-resilience
 
 spark-submit PRS_run.py ChineseForPRS.vcf GWAS_Resilience_clumpByShantala_noambi.txt PRS-resilienceChinese --no_maf --sample_file Chinese.sample --thresholds 0.2 0.1 0.05 --snp_log --GWAS_delim "\t" --sample_file_skip 2 --sample_file_delim " "
 
+PRS-Nirmala (BR-MDD)
 
-PRS-Nirmala (MDD)
-
-spark-submit PRS_run.py ChineseForPRS.vcf PRS_Amygdala.txt PRS-AmygdalaChinese --sample_file Chinese.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " "  --gwas_id 0 --gwas_p 7 --gwas_or 5 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 10 --snp_log  --no_maf --log_or --thresholds 0.2 0.1 0.05
+spark-submit PRS_run.py PFC_DEG_3_humanGenePos_AllEthnicIntersection.txt GWAS_pgc.mdd.clump.2012-04.txt PRS-PFC-DEG --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --gwas_id 0 --gwas_p 1 --gwas_or 2 --gwas_a1 3 --gwas_a2 4 --GWAS_delim "\t" --snp_log --no_maf --threshold_seq 0.01 1.00 0.01 --filetype GEN
 
 
 
