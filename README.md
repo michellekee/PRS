@@ -46,3 +46,8 @@ spark-submit PRS_run.py AllEthnicIntersection.vcf GWAS_ADHD_zscore_withaf_full_n
 
 
 
+PRS-MDD-Han
+
+spark-submit PRS_run.py AllEthnicIntersection.vcf GWAS_MDD_Han.txt PRS-MDD-Han-AllEthnicIntersection --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --GWAS_delim "\t" --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log --gwas_id 2 --gwas_p 8 --gwas_or 6 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 9 --log_or
+
+
