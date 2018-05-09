@@ -50,4 +50,5 @@ PRS-MDD-Han
 
 spark-submit PRS_run.py AllEthnicIntersection.vcf GWAS-MDD-Han_clumped.txt PRS-MDD-Han_clumped-AllEthnicIntersection --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --GWAS_delim "\t" --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log --gwas_id 0 --gwas_p 1 --gwas_or 2 --gwas_a1 3 --gwas_a2 4 --gwas_a1f 5 --log_or
 
-
+(Without docker)
+"/storage/fk-master/data/spark/spark/bin/spark-submit" --driver-memory 5g PRS_run.py AllEthnicIntersection.gen GWAS_pgc.mdd.clump.2012-04.txt PRS-pgc-mdd_clumped_AllEthnicIntersection --sample_file AllEthnicIntersection.sample --no_maf --thresholds 1 --snp_log --GWAS_delim "\t"  --filetype GEN  --sample_file_skip 2  --sample_file_delim " " --log_or
