@@ -52,3 +52,8 @@ spark-submit PRS_run.py AllEthnicIntersection.vcf GWAS-MDD-Han_clumped.txt PRS-M
 
 (Without docker)
 "/storage/fk-master/data/spark/spark/bin/spark-submit" --driver-memory 5g PRS_run.py AllEthnicIntersection.gen GWAS_pgc.mdd.clump.2012-04.txt PRS-pgc-mdd_clumped_AllEthnicIntersection --sample_file AllEthnicIntersection.sample --no_maf --thresholds 1 --snp_log --GWAS_delim "\t"  --filetype GEN  --sample_file_skip 2  --sample_file_delim " " --log_or
+
+
+
+PRS-EA-5000pruned (for Kieran)
+ spark-submit PRS_run.py /data/PRS-on-SPARK-DK/AllEthnicIntersection.gen GWAS_EduYears_Pooled_beta_withaf_5000pruned.txt PRS-EA-5000pruned --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --filetype GEN --snp_log --no_maf --threshold_seq 0.01 1.00 0.01 --GWAS_delim "\t"
