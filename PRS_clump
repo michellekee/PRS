@@ -56,6 +56,5 @@ GWAS_SWB_Full_nodiscardable_clump_180612.txt
 
 spark-submit PRS_run.py \
 /data/PRS-on-SPARK-DK/AllEthnicIntersection.gen GWAS_SWB_Full_nodiscardable_clump_180612.txt PRS-SWB-Full-clumped-hiRes
---sample_file AllEthnic.samples --filetype GEN --GWAS_delim "\t" 
---threshold_seq 0.01 1.00 0.01 --no_maf --snp_log 
+--sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --filetype GEN --GWAS_delim "\t"  --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log 
 
