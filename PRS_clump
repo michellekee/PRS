@@ -4,8 +4,7 @@ awk -v OFS='\t' '{print $1,$9,$7,$4,$5,$6}' SWB_Full.txt > GWAS_SWB_Full.txt
 
 # Step 2: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
 
-spark-submit PRS_run.py /data/PRS-on-SPARK-DK/AllEthnicIntersection.gen /data/PRS-on-SPARK-MK/GWAS/GWAS_SWB_Full.txt
-Discard_For_Clumping_SWB_Full --sample_file AllEthnic.samples --filetype GEN --GWAS_delim "\t" --thresholds 1 --no_maf --snp_log 
+spark-submit PRS_run.py /data/PRS-on-SPARK-DK/AllEthnicIntersection.gen /data/PRS-on-SPARK-MK/GWAS/GWAS_SWB_Full.txt Discard_For_Clumping_SWB_Full --sample_file AllEthnic.samples --filetype GEN --GWAS_delim "\t" --thresholds 1 --no_maf --snp_log 
 
 
 # Step 3: extract the list of discarded SNPs
@@ -37,7 +36,7 @@ TO_DISCARD_GWAS_SWB_Full_nodup_hard09_noambi_nodiscardable_overlapped_pval.txt
 
 # Step 7: clump (not in docker)
 
-plink --bfile /storage/fk-master/data/PRS-on-SPARK-MK/AllEthnicIntersection_plink/AllEthnicIntersection \
+plink --bfile /storage/fk-master/data/PRS-on-SPARK-MK/AllEthnicIntersection_plink/AllEthnicIntersection_plink_binary/AllEthnicIntersection \
 --clump TO_DISCARD_GWAS_SWB_Full_nodup_hard09_noambi_nodiscardable_overlapped_pval.txt \
 --clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
 --out TO_DISCARD_GWAS_SWB_Full_nodup_hard09_noambi_nodiscardable_overlapped
@@ -47,7 +46,7 @@ plink --bfile /storage/fk-master/data/PRS-on-SPARK-MK/AllEthnicIntersection_plin
 
 cat <(head -1 /data/PRS-on-SPARK-MK/GWAS/GWAS_SWB_Full.txt) \
 <(awk 'NR==FNR {FILE1[$3]=$0; next} ($1 in FILE1) {print $0}' \
-GWAS_SWB_Full_nodup_hard09_noambi_nodiscardable_overlapped.clumped \
+TO_DISCARD_GWAS_SWB_Full_nodup_hard09_noambi_nodiscardable_overlapped.clumped \
 GWAS_SWB_Full_nodup_hard09_noambi_nodiscardable_overlapped.txt) > \
 GWAS_SWB_Full_nodiscardable_clump_180612.txt
 
@@ -55,6 +54,5 @@ GWAS_SWB_Full_nodiscardable_clump_180612.txt
 # Step 11: run PRSoS (final step; use whichever thresholds you need)
 
 spark-submit PRS_run.py \
-/data/PRS-on-SPARK-DK/AllEthnicIntersection.gen GWAS_SWB_Full_nodiscardable_clump_180612.txt PRS-SWB-Full-clumped-hiRes
---sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --filetype GEN --GWAS_delim "\t"  --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log 
+/data/PRS-on-SPARK-DK/AllEthnicIntersection.gen GWAS_SWB_Full_nodiscardable_clump_180612.txt PRS-SWB-Full-clumped-hiRes --sample_file AllEthnic.samples --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " --filetype GEN --GWAS_delim "\t"  --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log 
 
