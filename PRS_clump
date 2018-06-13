@@ -4,7 +4,7 @@ awk -v OFS='\t' '{print $1,$9,$7,$4,$5,$6}' SWB_Full.txt > GWAS_SWB_Full.txt
 
 # Step 2: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
 
-spark-submit PRS_run.py /data/PRS-on-SPARK-DK/AllEthnicIntersection.gen /data/PRS-on-SPARK-MK/GWAS/GWAS_SWB_Full.txt Discard_For_Clumping_SWB_Full --sample_file AllEthnic.samples --filetype GEN --GWAS_delim "\t" --thresholds 1 --no_maf --snp_log 
+spark-submit PRS_run.py /data/PRSoS_common/AllEthnicIntersection.gen /data/PRS-on-SPARK-MK/GWAS/GWAS_SWB_10K_Full.txt Discard_For_Clumping_SWB_10K_Full --sample_file AllEthnic.samples --filetype GEN --GWAS_delim "\t" --thresholds 1 --no_maf --snp_log 
 
 
 # Step 3: extract the list of discarded SNPs
