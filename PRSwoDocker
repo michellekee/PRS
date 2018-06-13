@@ -1,0 +1,8 @@
+##running spark-submit on 48. Does not require docker
+##call spark-submit from spark folder imported from docker image cytey-fk-spark
+###when setting up for the first time need to change spark.driver.memory in spark-defaults.conf to 5g
+
+cd PRS-on-SPARK-DK
+
+../spark/spark/bin/spark-submit PRS_run.py FAAH_AllEthnicIntersection.txt \
+GWAS_snpxEPA_STAIt_clumped.txt PRS_snpxepa-STAIt_clumped_AllEthnicIntersection --sample_file AllEthnicIntersection.sample --no_maf --threshold_seq 0.01 1.00 0.01 --snp_log --GWAS_delim "\t"  --filetype GEN  --sample_file_skip 2  --sample_file_delim " "
