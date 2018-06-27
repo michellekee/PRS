@@ -1,37 +1,37 @@
 # Step 1: customize full GWAS (to be like: SNP, P, BETA(or OR), A1, A2, A1_FREQ)
 cd /data/PRS-on-SPARK-MK/GWAS
-awk -v OFS='\t' '{print $1,$9,$7,$4,$5,$6}' SWB_Full.txt > GWAS_Neuroticism_Full.txt
+awk -v OFS='\t' '{print $1,$4,$5,$6,$7,$8}' Susceptibility_Full.txt > GWAS_Susceptibility_Full.txt
 
 # Step 2: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
 
-spark-submit PRS_run.py /data/PRSoS_common/AllEthnicIntersection.gen /data/PRS-on-SPARK-MK/GWAS/GWAS_Neuroticism_Full.txt \
-Discard_For_Clumping_Neuroticism_Full --sample_file /data/PRSoS_common/AllEthnicIntersection.sample \
+spark-submit PRS_run.py /data/PRSoS_common/AllEthnicIntersection.gen /data/PRS-on-SPARK-MK/GWAS/GWAS_Susceptibility_Full.txt \
+Discard_For_Clumping_Susceptibility_Full --sample_file /data/PRSoS_common/AllEthnicIntersection.sample \
 --filetype GEN --GWAS_delim "\t" --thresholds 1 --no_maf --snp_log 
 
 
 # Step 3: extract the list of discarded SNPs
 
-cut -d',' -f3 Discard_For_Clumping_Neuroticism_Full.snplog | grep rs | tr -cd '\11\12\40-\176' > Discard_For_Clumping_Neuroticism_Full.snplogdiscardlist
+cut -d',' -f3 Discard_For_Clumping_Susceptibility_Full.snplog | grep rs | tr -cd '\11\12\40-\176' > Discard_For_Clumping_Susceptibility_Full.snplogdiscardlist
 
 
 # Step 4: remove discardable SNPs from the GWAS
 
-awk 'NR==FNR{FILE1[$1]; next} !($1 in FILE1) {print}' Discard_For_Clumping_Neuroticism_Full.snplogdiscardlist \
-/data/PRS-on-SPARK-MK/GWAS/GWAS_Neuroticism_Full.txt > \
-GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable.txt
+awk 'NR==FNR{FILE1[$1]; next} !($1 in FILE1) {print}' Discard_For_Clumping_Susceptibility_Full.snplogdiscardlist \
+/data/PRS-on-SPARK-MK/GWAS/GWAS_Susceptibility_Full.txt > \
+GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable.txt
 
 
 # Step 5: retain overlapped SNPs (optional, allows smaller files to work with by removing unnecessary information)
 
 awk 'NR==FNR {FILE1[$2]=$0; next} ($1 in FILE1) {print $0}' /data/PRSoS_common/AllEthnicIntersection.gen \
-GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable.txt > \
-GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped.txt
+GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable.txt > \
+GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped.txt
 
 
 # Step 6: clump preparation
 
-cat <(echo "SNP P") <(awk '{print $1,$2}' GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped.txt) > \
-TO_DISCARD_GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped_pval.txt
+cat <(echo "SNP P") <(awk '{print $1,$2}' GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped.txt) > \
+TO_DISCARD_GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped_pval.txt
 
 # (also convert VCF or GEN to PLINK files (.bed/.bim/.fam) if you have not already done so)
 
@@ -39,24 +39,24 @@ TO_DISCARD_GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped_pv
 # Step 7: clump (not in docker, but need to sudo)
 
 plink --bfile AllEthnicIntersection_plink_binary/AllEthnicIntersection \
---clump TO_DISCARD_GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped_pval.txt \
+--clump TO_DISCARD_GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped_pval.txt \
 --clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
---out TO_DISCARD_GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped
+--out TO_DISCARD_GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped
 
 
 # Step 8: extract clumped SNPs from GWAS
 
-cat <(head -1 /data/PRS-on-SPARK-MK/GWAS/GWAS_Neuroticism_Full.txt) \
+cat <(head -1 /data/PRS-on-SPARK-MK/GWAS/GWAS_Susceptibility_Full.txt) \
 <(awk 'NR==FNR {FILE1[$3]=$0; next} ($1 in FILE1) {print $0}' \
-TO_DISCARD_GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped.clumped \
-GWAS_Neuroticism_Full_nodup_hard09_noambi_nodiscardable_overlapped.txt) > \
-GWAS_Neuroticism_Full_nodiscardable_clump_180612.txt
+TO_DISCARD_GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped.clumped \
+GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped.txt) > \
+GWAS_Susceptibility_Full_nodiscardable_clump_180612.txt
 
 
 # Step 11: run PRSoS (final step; use whichever thresholds you need)
 
 spark-submit PRS_run.py \
-/data/PRSoS_common/AllEthnicIntersection.gen GWAS_Neuroticism_Full_nodiscardable_clump_180612.txt PRS-Neuroticism-Full-clumped-hiRes \
+/data/PRSoS_common/AllEthnicIntersection.gen GWAS_Susceptibility_Full_nodiscardable_clump_180612.txt PRS-Susceptibility-Full-clumped-hiRes \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN --GWAS_delim "\t"  --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log 
 
