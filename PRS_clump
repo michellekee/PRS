@@ -38,7 +38,7 @@ TO_DISCARD_GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped
 
 # Step 7: clump (not in docker, but need to sudo)
 
-plink --bfile AllEthnicIntersection_plink_binary/AllEthnicIntersection \
+plink --bfile /storage/fk-master/data/PRSoS_common/AllEthnicIntersection_plink/AllEthnicIntersection_plink_binary/AllEthnicIntersection \
 --clump TO_DISCARD_GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped_pval.txt \
 --clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
 --out TO_DISCARD_GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable_overlapped
