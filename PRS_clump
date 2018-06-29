@@ -56,7 +56,7 @@ GWAS_Susceptibility_Full_nodiscardable_clump_180612.txt
 # Step 11: run PRSoS (final step; use whichever thresholds you need)
 
 spark-submit PRS_run.py \
-/data/PRSoS_common/AllEthnicIntersection.gen GWAS_Susceptibility_Full_nodiscardable_clump_180612.txt PRS-Susceptibility-Full-clumped-hiRes \
+/data/PRSoS_common/AllEthnicIntersection.gen GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable.txt PRS-Susceptibility-GUSTOclumped-hiRes \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
---filetype GEN --GWAS_delim "\t"  --threshold_seq 0.01 1.00 0.01 --no_maf --snp_log 
+--filetype GEN --GWAS_delim "\t"  --threshold_seq 0.01 1 0.01 --no_maf --snp_log 
 
