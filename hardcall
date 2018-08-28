@@ -1,2 +1,2 @@
-#for example, to create hard-call 0.9 gen file
-plink --gen $yourgenfile --sample $samplefile --hard-call-threshold 0.1 --recode oxford --out $yourgenfile_hc09
+#for example, to create hard-call 0.9 gen file (sudo to work)
+plink --gen $yourgenfile.gen --sample $samplefile.gen --hard-call-threshold 0.1 --recode oxford --out $yourgenfile_hc09
