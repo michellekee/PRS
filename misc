@@ -1,0 +1,21 @@
+#Extract autosomes only
+grep -vE '^X|^Y|^M' $DATA > ${DATA%.*}_autosomes.${DATA##*.}
+
+
+
+#for example, to create hard-call 0.9 gen file (sudo to work)
+plink --gen $yourgenfile.gen --sample $samplefile.gen --hard-call-threshold 0.1 --recode oxford --out $yourgenfile_hc09
+
+
+##VCF2GEN
+# create gen file
+grep -v "#" $VCF | awk -F'\t' '{$6=$7=$8=$9=""; t=$2; $2=$3; $3=t; print $0}' | sed -r 's/ *[[:digit:]]+\|[[:digit:]]+\:[[:digit:]]+\.?[[:digit:]]*,[[:digit:]]+\.?[[:digit:]]*:[[:digit:]]+\.?[[:digit:]]*:/ /g' | sed 's/\,/ /g' > ${OUT_DIR}/$(basename "${VCF%.vcf}").gen
+
+
+# create sample file
+cat <(echo -e "ID_1 ID_2 missing\n0 0 0") <(grep "#CHROM" $(ls $VCF | head -1) | cut -f10- --output-delimiter=$'\n' | awk '{print $0,$0,0}') > ${OUT_DIR}/$(basename "${VCF%.vcf}").sample
+
+
+
+
+
