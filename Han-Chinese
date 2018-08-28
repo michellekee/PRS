@@ -1,0 +1,9 @@
+
+# Step 1: customize full GWAS (to be like: SNP, P, BETA(or OR), A1, A2, A1_FREQ)
+awk -v OFS='\t' '{print $3,$9,$7,$4,$5,$6}' /data/PRS-on-SPARK-MK/GWAS/GWAS_MDD_Han.txt > GWAS_MDD_Han_withAF_Full.txt
+
+
+# Step 2: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen GWAS_MDD_Han_withAF_Full.txt \
+TO_DISCARD_GUSTO_INFO08_nodup_autosomes_hc09_FOR_GWAS_MDD_Han_withAF_Full_CLUMPING \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log
