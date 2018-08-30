@@ -56,7 +56,7 @@ GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlap
 GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt
 
 # Step 9: run PRSoS (final step; use whichever thresholds you need)
-spark-submit PRS_run.py \ GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen \
+spark-submit PRS_run.py GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen \
 GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt \
 GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830_PRS_180830 \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample \
