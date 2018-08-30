@@ -7,3 +7,25 @@ awk -v OFS='\t' '{print $3,$9,$7,$4,$5,$6}' /data/PRS-on-SPARK-MK/GWAS/GWAS_MDD_
 spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen GWAS_MDD_Han_withAF_Full.txt \
 TO_DISCARD_GUSTO_INFO08_nodup_autosomes_hc09_FOR_GWAS_MDD_Han_withAF_Full_CLUMPING \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log
+
+
+# Step 3: extract the list of discarded SNPs
+cut -d',' -f3 TO_DISCARD_GUSTO_INFO08_nodup_autosomes_hc09_FOR_GWAS_MDD_Han_withAF_Full_CLUMPING.snplog | 
+grep rs | tr -cd '\11\12\40-\176' > \
+TO_DISCARD_GUSTO_INFO08_nodup_autosomes_hc09_FOR_GWAS_MDD_Han_withAF_Full_CLUMPING.snplogdiscardlist
+
+
+# Step 4: remove discardable SNPs from the GWAS
+awk 'NR==FNR{FILE1[$1]; next} !($1 in FILE1) {print}' \
+TO_DISCARD_GUSTO_INFO08_nodup_autosomes_hc09_FOR_GWAS_MDD_Han_withAF_Full_CLUMPING.snplogdiscardlist \
+GWAS_MDD_Han_withAF_Full.txt > \
+GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable.txt
+
+
+# Step 5: retain overlapped SNPs (optional, allows smaller files to work with by removing unnecessary information)
+awk 'NR==FNR {FILE1[$2]=$0; next} ($1 in FILE1) {print $0}' /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen \
+GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable.txt > \
+GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt
+
+
+# Step 6: clump preparation
