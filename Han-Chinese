@@ -22,10 +22,21 @@ GWAS_MDD_Han_withAF_Full.txt > \
 GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable.txt
 
 
-# Step 5: retain overlapped SNPs (optional, allows smaller files to work with by removing unnecessary information)
+# Step 5A: retain overlapped SNPs (optional, allows smaller files to work with by removing unnecessary information)
 awk 'NR==FNR {FILE1[$2]=$0; next} ($1 in FILE1) {print $0}' /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen \
 GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable.txt > \
 GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt
 
+# Step 5B: retain overlapped SNPs in GEN file (optional, allows smaller files to work with by removing unnecessary information)
+awk 'NR==FNR {FILE1[$1]=$0; next} ($2 in FILE1) {print $0}' GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt \
+/data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen > \
+GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen
+
 
 # Step 6: clump preparation
+cat <(echo "SNP P") <(awk '{print $1,$2}' GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt) > \
+TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped_pval.txt
+
+
+# Step 7: clump
+plink --bfile 
