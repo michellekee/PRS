@@ -59,8 +59,19 @@ GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830
 spark-submit PRS_run.py GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen \
 GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt \
 GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830_PRS_180830 \
---sample_file /data/PRSoS_common/AllEthnicIntersection.sample \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
 --snp_log 
+
+
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen \
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt \
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830_PRS_180830 \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
+--snp_log 
+
