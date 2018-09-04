@@ -59,9 +59,15 @@ GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_GUSTO_I
 cat <(echo "SNP P") <(awk '{print $1,$2}' GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt) > \
 TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped_pval.txt
 
+cat <(echo "SNP P") <(awk '{print $1,$2}' GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped.txt) > \
+TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped_pval.txt
+
 # (also convert VCF or GEN to PLINK files (.bed/.bim/.fam) if you have not already done so)
 sudo plink --gen GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen --sample /storage/fk-master/data/PRSoS_common/AllEthnicIntersection.sample \
 --make-bed --out GUSTO_INFO08_nodup_autosomes_hc09_overlapped
+
+sudo plink --gen /storage/fk-master/data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen --sample /storage/fk-master/data/PRSoS_common/AllEthnicIntersection.sample \
+--make-bed --out GUSTO_INFO08_nodup_autosomes
 
 
 # Step 7: clump
@@ -70,12 +76,23 @@ sudo plink --bfile GUSTO_INFO08_nodup_autosomes_hc09_overlapped \
 --clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
 --out TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped
 
+sudo plink --bfile GUSTO_INFO08_nodup_autosomes \
+--clump TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped_pval.txt \
+--clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
+--out TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped
+
 # Step 8: extract clumped SNPs from GWAS
 cat <(head -1 GWAS_MDD_Han_withAF_Full.txt) \
 <(awk 'NR==FNR {FILE1[$3]=$0; next} ($1 in FILE1) {print $0}' \
 TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.clumped \
 GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt) > \
 GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt
+
+cat <(head -1 GWAS_MDD_Han_withAF_Full.txt) \
+<(awk 'NR==FNR {FILE1[$3]=$0; next} ($1 in FILE1) {print $0}' \
+TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped.clumped \
+GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped.txt) > \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt
 
 # Step 9: run PRSoS (final step; use whichever thresholds you need)
 spark-submit PRS_run.py GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen \
@@ -96,4 +113,16 @@ GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
 --snp_log 
+
+
+
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_180830_PRS_180830 \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
+--snp_log 
+
 
