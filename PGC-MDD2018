@@ -3,7 +3,7 @@
 awk -v OFS='\t' '{print $2,$11,$9,$4,$5,$6}' /data/PRS-on-SPARK-MK/GWAS/MDD2018_ex23andme.txt > GWAS_MDD2018_ex23andme_withAF_Full.txt
 awk -v OFS='\t' '{print $2,$11,$9,$4,$5,$6}' /data/PRS-on-SPARK-MK/GWAS/MDD2018_ex23andme_19fields.txt > GWAS_MDD2018_ex23andme_19fields_withAF_Full.txt
 awk -v OFS='\t' '{print $2,$11,$9,$4,$5,$6}' MDD2018_ex23andMe_19fields.txt > /data/PRS-on-SPARK-MK/GWAS_MDD2018_ex23andMe_19fields_withAF_Full.txt
-
+awk -v OFS='\t' '{print $2,$11,$9,$4,$5,$6}' PGC_MDD2018_10kSNPs.txt > GWAS_MDD2018_10kSNPs_withAF_Clump.txt
 
 #Step 1b: Remove "I" and "D" from A1 column.
 awk '!($4 ~ "I" || $4 ~ "D")' GWAS_MDD2018_ex23andMe_19fields_withAF_Full.txt > GWAS_MDD2018_ex23andMe_19fields_withAF_Full_RemoveDI.txt
@@ -12,6 +12,12 @@ awk '!($4 ~ "I" || $4 ~ "D")' GWAS_MDD2018_ex23andMe_19fields_withAF_Full.txt > 
 # Step 2: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
 spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen GWAS_MDD2018_ex23andMe_19fields_withAF_Full_RemoveDI.txt \
 TO_DISCARD_GUSTO_INFO08_nodup_autosomes_FOR_GWAS_MDD2018_ex23andMe_19fields_withAF_Full_RemoveDI_CLUMPING.txt \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --log_or
+
+
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen GWAS_MDD2018_10kSNPs_withAF_Clump.txt \
+TO_DISCARD_GUSTO_INFO08_nodup_autosomes_FOR_GWAS_MDD2018_10kSNPs_withAF_Clump.txt \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --log_or
 
