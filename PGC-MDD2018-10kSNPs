@@ -1,0 +1,31 @@
+
+# Step 1: customize full GWAS (to be like: SNP, P, BETA(or OR), A1, A2, A1_FREQ)
+awk -v OFS='\t' '{print $2,$11,$9,$4,$5,$6}' PGC_MDD2018_10kSNPs.txt > GWAS_MDD2018_10kSNPs_withAF_Clumped.txt
+
+
+# Step 2: Use clumped customized GWAS file to create PRS-PGC-MDD2019=8-10kSNPS
+
+## for hc09.gen
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen \
+GWAS_MDD2018_10kSNPs_withAF_Clump.txt \
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD2018_10kSNPs_withAF_Clumped_181002_PRS_181002 \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
+--snp_log \
+--log_or
+
+
+## for non-hc.gen
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen \
+GWAS_MDD2018_10kSNPs_withAF_Clump.txt \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD2018_10kSNPs_withAF_Clumped_181002_PRS_181002 \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
+--snp_log \
+--log_or
+
+
