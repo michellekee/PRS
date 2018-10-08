@@ -29,3 +29,13 @@ GUSTO_INFO08_nodup_autosomes_GWAS_MDD2018_10kSNPs_withAF_Clumped_181002_PRS_1810
 --log_or
 
 
+## for non-hc.gen (higher resolution at lower thresholds)
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen \
+GWAS_MDD2018_10kSNPs_withAF_Clump.txt \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD2018_10kSNPs_withAF_Clumped_LoThresholdHiReso_181002_PRS_181002 \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--threshold_seq 0.1 0.001 0.001 \
+--snp_log \
+--log_or
