@@ -20,7 +20,7 @@ GUSTO_INFO08_nodup_noambi_autosomes_hc09_GWAS_MDD2012_Clumped_woAF_181005_PRS_18
 
 ## for non-hc.gen
 spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_noambi_autosomes.gen \
-GWAS_MDD2018_10kSNPs_withAF_Clump.txt \
+GWAS_MDD2012_Clumped_woAF.txt \
 GUSTO_INFO08_nodup_noambi_autosomes_GWAS_MDD2012_Clumped_woAF_181005_PRS_181005 \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN \
@@ -29,5 +29,6 @@ GUSTO_INFO08_nodup_noambi_autosomes_GWAS_MDD2012_Clumped_woAF_181005_PRS_181005 
 --snp_log \
 --log_or \
 --no_maf
+
 
 
