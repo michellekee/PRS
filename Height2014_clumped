@@ -1,6 +1,6 @@
 
 # Step 1: customize full GWAS (to be like: SNP, P, beta, A1, A2, A1_Freq)
-awk -v OFS='\t' '{print $1,$7,$2,$3,$4}' GWAS/GIANT_HEIGHT_Wood_et_al_2014_publicrelease_HapMapCeuFreq.txt > GWAS_GIANTheight2014_Clumped_MAF.txt
+awk -v OFS='\t' '{print $1,$7,$5,$2,$3,$4}' GWAS/GIANT_HEIGHT_Wood_et_al_2014_publicrelease_HapMapCeuFreq_Num3.txt > GWAS_GIANTheight2014_Clumped_MAF.txt
 
 
 # Step 2: Use clumped customized GWAS file to create PRS-GIANTheight2014_Clumped_MAF
