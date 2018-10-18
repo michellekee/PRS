@@ -4,22 +4,10 @@ awk -v OFS='\t' '{print $1,$7,$5,$2,$3,$4}' GWAS/GIANT_HEIGHT_Wood_et_al_2014_pu
 
 
 # Step 2: Use clumped customized GWAS file to create PRS-GIANTheight2014_Clumped_MAF
-
-## for hc09.gen
-spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_noambi_autosomes_hc09.gen \
-GWAS_GIANTheight2014_Clumped_MAF.txt \
-GUSTO_INFO08_nodup_noambi_autosomes_hc09_GWAS_GIANTheight2014_Clumped_MAF_181015_PRS_181015 \
---sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
---filetype GEN \
---GWAS_delim "\t" \
---thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
---snp_log
-
-
 ## for non-hc.gen
-spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_noambi_autosomes.gen \
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen \
 GWAS_GIANTheight2014_Clumped_MAF.txt \
-GUSTO_INFO08_nodup_noambi_autosomes_GWAS_GWAS_GIANTheight2014_Clumped_MAF_181015_PRS_181015 \
+GUSTO_INFO08_nodup_autosomes_GWAS_GIANTheight2014_Clumped_MAF_181015_PRS_181015 \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN \
 --GWAS_delim "\t" \
