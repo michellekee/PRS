@@ -1,0 +1,19 @@
+
+# Step 1: customize full GWAS (to be like: SNP, P, beta, A1, A2, MAF)
+awk -v OFS='\t' '{print $1,$9,$7,$4,$5,$6}' EduYears_Pooled_5000.txt > GWAS_OkbayEA_Clumped_withAF.txt
+
+
+# Step 2: Use clumped customized GWAS file to create PRS-OkbayEA_Clumped
+
+## for non-hc.gen
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen \
+GWAS_OkbayEA_Clumped_withAF.txt \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD2012_Clumped_woAF_181029_PRS_181029 \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
+--snp_log
+
+
+
