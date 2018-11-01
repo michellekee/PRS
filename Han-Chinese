@@ -7,13 +7,13 @@ awk -v OFS='\t' '{print $3,$9,$7,$4,$5,$6}' /data/PRS-on-SPARK-MK/GWAS/GWAS_MDD_
 spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen GWAS_MDD_Han_withAF_Full.txt \
 TO_DISCARD_GUSTO_INFO08_nodup_autosomes_hc09_FOR_GWAS_MDD_Han_withAF_Full_CLUMPING \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
---filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log
+--filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --log_or
 
 
 spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen GWAS_MDD_Han_withAF_Full.txt \
 TO_DISCARD_GUSTO_INFO08_nodup_autosomes_FOR_GWAS_MDD_Han_withAF_Full_CLUMPING \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
---filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log
+--filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --log_or
 
 
 # Step 3: extract the list of discarded SNPs
@@ -86,43 +86,46 @@ cat <(head -1 GWAS_MDD_Han_withAF_Full.txt) \
 <(awk 'NR==FNR {FILE1[$3]=$0; next} ($1 in FILE1) {print $0}' \
 TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.clumped \
 GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt) > \
-GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_181101.txt
 
 cat <(head -1 GWAS_MDD_Han_withAF_Full.txt) \
 <(awk 'NR==FNR {FILE1[$3]=$0; next} ($1 in FILE1) {print $0}' \
 TO_DISCARD_GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped.clumped \
 GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_nodiscardable_overlapped.txt) > \
-GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_181101.txt
 
 # Step 9: run PRSoS (final step; use whichever thresholds you need)
 spark-submit PRS_run.py GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen \
-GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt \
-GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830_PRS_180830 \
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_181101.txt \
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_181101_PRS_181101 \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
 --snp_log 
+--log_or
 
 
 spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen \
-GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt \
-GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_180830_PRS_180830 \
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_181101.txt \
+GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_181101_PRS_181101 \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
 --snp_log 
+--log_or
 
 
 
 spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen \
-GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_180830.txt \
-GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_180830_PRS_180830 \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_181101.txt \
+GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_181101_PRS_181101 \
 --sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
 --filetype GEN \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
 --snp_log 
+--log_or
 
 
