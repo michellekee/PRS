@@ -15,5 +15,12 @@ GUSTO_INFO08_nodup_autosomes_GWAS_OkbayEA_Clumped_withAF_181029_PRS_181029 \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
 --snp_log
 
-
+spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_autosomes.gen \
+GWAS_OkbayEA_Clumped_withAF.txt \
+GUSTO_INFO08_nodup_autosomes_GWAS_OkbayEA_Clumped_withAF_181101_PRS_181101 \
+--sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--threshold_seq 0.00001 0.001 0.00001 \
+--snp_log
 
