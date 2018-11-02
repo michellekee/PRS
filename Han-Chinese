@@ -102,7 +102,7 @@ GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_181101
 --filetype GEN \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
---snp_log 
+--snp_log \
 --log_or
 
 
@@ -113,7 +113,7 @@ GUSTO_INFO08_nodup_autosomes_hc09_GWAS_MDD_Han_withAF_nodiscardable_clump_181101
 --filetype GEN \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
---snp_log 
+--snp_log \
 --log_or
 
 
@@ -125,7 +125,7 @@ GUSTO_INFO08_nodup_autosomes_GWAS_MDD_Han_withAF_nodiscardable_clump_181101_PRS_
 --filetype GEN \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
---snp_log 
+--snp_log \
 --log_or
 
 
