@@ -1,0 +1,17 @@
+# Step 1a: customize full GWAS (to be like: SNP, P, SNPweight, A1, A2, A1_FREQ)
+cd /data/PRS-on-SPARK-MK/GWAS
+awk -v OFS='\t' '{print $1,$2,$3,$5,$6,$7}' train_1k_TRUE_AA_EA_maf_merged_tab.txt > GWAS_trainSNPweight_MAF.txt
+
+# Step 1b: customize full GWAS (to be like: SNP, P, OR, A1, A2, A1_FREQ)
+cd /data/PRS-on-SPARK-MK/GWAS
+awk -v OFS='\t' '{print $1,$2,$4,$5,$6,$7}' train_1k_TRUE_AA_EA_maf_merged_tab.txt > GWAS_trainOR_MAF.txt
+
+# Step 2a: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
+spark-submit PRS_run.py /data/PRSoS_common/Shantala/AA_trainSet.gen \
+/data/PRSoS_common/Shantala/GWAS_trainSNPweight_MAF.txt Discard_for_clumping_Shantala_AAtrainSNPweight_MAF \
+--sample_file /data/PRSoS_common/Shantala/AA_trainSet.sample --filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log
+
+# Step 2b: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
+spark-submit PRS_run.py /data/PRSoS_common/Shantala/AA_trainSet.gen \
+/data/PRSoS_common/Shantala/GWAS_trainOR_MAF.txt Discard_for_clumping_Shantala_AAtrainOR_MAF \
+--sample_file /data/PRSoS_common/Shantala/AA_trainSet.sample --filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log
