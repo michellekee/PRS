@@ -62,9 +62,9 @@ plink --bfile /storage/fk-master/data/PRSoS_common/Shantala/AA_trainSet \
 --out /storage/fk-master/data/PRS-on-SPARK-MK/TO_DISCARD_GWAS_Shantala_AAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped
 
 plink --bfile /storage/fk-master/data/PRSoS_common/Shantala/EA_trainSet \
---clump TO_DISCARD_GWAS_Shantala_EAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped_pval.txt \
+--clump /storage/fk-master/data/PRS-on-SPARK-MK/TO_DISCARD_GWAS_Shantala_EAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped_pval.txt \
 --clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
---out TO_DISCARD_GWAS_Shantala_EAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped
+--out /storage/fk-master/data/PRS-on-SPARK-MK/TO_DISCARD_GWAS_Shantala_EAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped
 
 
 # Step 8: extract clumped SNPs from GWAS
@@ -85,6 +85,9 @@ GWAS_Shantala_EAtrainSNPweight_MAF_nodup_noambi_nodiscardable_clump_190226.txt
 ### Step 11: run PRSoS (final step; use whichever thresholds you need)
 
 spark-submit PRS_run.py \
-/data/PRSoS_common/AllEthnicIntersection.gen GWAS_Susceptibility_Full_nodup_hard09_noambi_nodiscardable.txt PRS-Susceptibility-GUSTOclumped-hiRes \
---sample_file /data/PRSoS_common/AllEthnicIntersection.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
---filetype GEN --GWAS_delim "\t"  --threshold_seq 0.01 1 0.01 --no_maf --snp_log 
+/data/PRSoS_common/Shantala/trainSet.gen /data/PRSoS_common/Shantala/EA_AA_GWAS_commonSNP.txt PRS-Sus-trainSet_commonSNP \
+--sample_file /data/PRSoS_common/Shantala/trainSet.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
+--snp_log \
