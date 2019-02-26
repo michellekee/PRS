@@ -12,7 +12,7 @@ spark-submit PRS_run.py /data/PRSoS_common/Shantala/AA_trainSet.gen \
 # Step 2b: run PRSoS to produce the SNP log for EA_trainSet(use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
 spark-submit PRS_run.py /data/PRSoS_common/Shantala/EA_trainSet.gen \
 /data/PRSoS_common/Shantala/GWAS_trainSNPweight_MAF.txt Discard_for_clumping_Shantala_EAtrainSNPweight_MAF \
---filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --sample_file /data/PRSoS_common/Shantala/AA_trainSet.sample \
+--filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --sample_file /data/PRSoS_common/Shantala/EA_trainSet.sample \
 --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim "\t"
 
 
@@ -57,9 +57,9 @@ TO_DISCARD_GWAS_Shantala_EAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlap
 
 # Step 7: clump (not in docker, but need to sudo)
 plink --bfile /storage/fk-master/data/PRSoS_common/Shantala/AA_trainSet \
---clump TO_DISCARD_GWAS_Shantala_AAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped_pval.txt \
+--clump /storage/fk-master/data/PRS-on-SPARK-MK/TO_DISCARD_GWAS_Shantala_AAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped_pval.txt \
 --clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
---out TO_DISCARD_GWAS_Shantala_AAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped
+--out /storage/fk-master/data/PRS-on-SPARK-MK/TO_DISCARD_GWAS_Shantala_AAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped
 
 plink --bfile /storage/fk-master/data/PRSoS_common/Shantala/EA_trainSet \
 --clump TO_DISCARD_GWAS_Shantala_EAtrainSNPweight_MAF_nodup_noambi_nodiscardable_overlapped_pval.txt \
