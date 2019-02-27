@@ -91,3 +91,16 @@ spark-submit PRS_run.py \
 --GWAS_delim "\t" \
 --thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
 --snp_log \
+
+
+#### STEP 12: TO TEST PRS on TEST SET.
+spark-submit PRS_run.py \
+/data/PRSoS_common/Shantala/testSet.gen /data/PRSoS_common/Shantala/EA_AA_GWAS_commonSNP.txt PRS-Sus-testSet_commonSNP \
+--sample_file /data/PRSoS_common/Shantala/testSet.sample --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim " " \
+--filetype GEN \
+--GWAS_delim "\t" \
+--thresholds 0.0001 0.001 $(seq 0.01 0.01 1.00) \
+--snp_log \
+
+
+
