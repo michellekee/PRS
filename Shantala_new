@@ -63,7 +63,7 @@ GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF_noambi_nodiscardable_overlapped.txt
 # Step 5B: retain overlapped SNPs in GEN file (optional, allows smaller files to work with by removing unnecessary information)
 awk 'NR==FNR {FILE1[$1]=$0; next} ($2 in FILE1) {print $0}' GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF_noambi_nodiscardable_overlapped.txt \
 /data/PRSoS_common/Shantala/trainSet_excludedSNPs_noambi.gen > \
-Shantala/trainSet_excludedSNPs_noambi_overlapped.gen
+/data/PRSoS_common/Shantala/trainSet_excludedSNPs_noambi_overlapped.gen
 
 
 X# Step 6: clump preparation
