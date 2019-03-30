@@ -15,9 +15,19 @@ spark-submit PRS_run.py /data/PRSoS_common/Shantala/EA_trainSet_excludedSNPs.gen
 --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim "\t" --no_maf
 
 
+## Step 2: run PRSoS to produce the SNP log for trainSet(use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
+spark-submit PRS_run.py /data/PRSoS_common/Shantala/trainSet_excludedSNPs.gen \
+/data/PRSoS_common/Shantala/GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF.txt Discard_for_clumping_fastLmm_excludedSNPs_withPC12_OR_noMAF \
+--filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --sample_file /data/PRSoS_common/Shantala/trainSet_excludedSNPs.sample \
+--sample_file_ID 0 --sample_file_skip 2 --sample_file_delim "\t" --no_maf --log_or
+
+
 # Step 3: extract the list of discarded SNPs
 cut -d',' -f3 Discard_for_clumping_Shantala_AAtrainOR_excludedSNPs_noMAF.snplog | grep rs | tr -cd '\11\12\40-\176' \
 > Discard_for_clumping_Shantala_AAtrainOR_excludedSNPs_noMAF.snplogdiscardlist
+
+cut -d',' -f3 Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplog | grep rs | tr -cd '\11\12\40-\176' \
+> Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplogdiscardlist
 
 cut -d',' -f3 Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplog | grep rs | tr -cd '\11\12\40-\176' \
 > Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplogdiscardlist
@@ -41,6 +51,11 @@ GWAS_Shantala_AAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped
 awk 'NR==FNR {FILE1[$2]=$0; next} ($1 in FILE1) {print $0}' /data/PRSoS_common/Shantala/EA_trainSet_excludedSNPs.gen \
 GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable.txt > \
 GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped.txt
+
+# Step 5B: retain overlapped SNPs in GEN file (optional, allows smaller files to work with by removing unnecessary information)
+awk 'NR==FNR {FILE1[$1]=$0; next} ($2 in FILE1) {print $0}' GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt \
+/data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen > \
+GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen
 
 
 # Step 6: clump preparation
