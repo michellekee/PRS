@@ -16,7 +16,7 @@ spark-submit PRS_run.py /data/PRSoS_common/Shantala/EA_trainSet_excludedSNPs.gen
 
 
 ## Step 2: run PRSoS to produce the SNP log for trainSet(use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
-spark-submit PRS_run.py /data/PRSoS_common/Shantala/trainSet_excludedSNPs.gen \
+spark-submit PRS_run.py /data/PRSoS_common/Shantala/trainSet_excludedSNPs_noambi.gen \
 /data/PRSoS_common/Shantala/GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF.txt Discard_for_clumping_fastLmm_excludedSNPs_withPC12_OR_noMAF \
 --filetype GEN --GWAS_delim "\t" --thresholds 1 --snp_log --sample_file /data/PRSoS_common/Shantala/trainSet_excludedSNPs.sample \
 --sample_file_ID 0 --sample_file_skip 2 --sample_file_delim "\t" --no_maf --log_or
@@ -29,8 +29,8 @@ cut -d',' -f3 Discard_for_clumping_Shantala_AAtrainOR_excludedSNPs_noMAF.snplog 
 cut -d',' -f3 Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplog | grep rs | tr -cd '\11\12\40-\176' \
 > Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplogdiscardlist
 
-cut -d',' -f3 Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplog | grep rs | tr -cd '\11\12\40-\176' \
-> Discard_for_clumping_Shantala_EAtrainOR_excludedSNPs_noMAF.snplogdiscardlist
+cut -d',' -f3 Discard_for_clumping_fastLmm_excludedSNPs_withPC12_OR_noMAF.snplog | grep rs | tr -cd '\11\12\40-\176' \
+> Discard_for_clumping_fastLmm_excludedSNPs_withPC12_OR_noMAF.snplogdiscardlist
 
 
 # Step 4: remove discardable SNPs from the GWAS
@@ -42,6 +42,9 @@ awk 'NR==FNR{FILE1[$1]; next} !($1 in FILE1) {print}' Discard_for_clumping_Shant
 /data/PRSoS_common/Shantala/GWAS_trainOR_excludedSNPs_noMAF.txt > \
 GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable.txt
 
+awk 'NR==FNR{FILE1[$1]; next} !($1 in FILE1) {print}' Discard_for_clumping_fastLmm_excludedSNPs_withPC12_OR_noMAF.snplogdiscardlist \
+/data/PRSoS_common/Shantala/GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF.txt > \
+GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF_noambi_nodiscardable.txt
 
 # Step 5: retain overlapped SNPs (optional, allows smaller files to work with by removing unnecessary information)
 awk 'NR==FNR {FILE1[$2]=$0; next} ($1 in FILE1) {print $0}' /data/PRSoS_common/Shantala/AA_trainSet_excludedSNPs.gen \
@@ -52,13 +55,18 @@ awk 'NR==FNR {FILE1[$2]=$0; next} ($1 in FILE1) {print $0}' /data/PRSoS_common/S
 GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable.txt > \
 GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped.txt
 
+awk 'NR==FNR {FILE1[$2]=$0; next} ($1 in FILE1) {print $0}' /data/PRSoS_common/Shantala/trainSet_excludedSNPs_noambi.gen \
+GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF_noambi_nodiscardable.txt > \
+GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF_noambi_nodiscardable_overlapped.txt
+
+
 # Step 5B: retain overlapped SNPs in GEN file (optional, allows smaller files to work with by removing unnecessary information)
-awk 'NR==FNR {FILE1[$1]=$0; next} ($2 in FILE1) {print $0}' GWAS_MDD_Han_withAF_Full_GUSTO_INFO08_nodup_autosomes_hc09_nodiscardable_overlapped.txt \
-/data/PRSoS_common/GUSTO_INFO08_nodup_autosomes_hc09.gen > \
-GUSTO_INFO08_nodup_autosomes_hc09_overlapped.gen
+awk 'NR==FNR {FILE1[$1]=$0; next} ($2 in FILE1) {print $0}' GWAS_fastLmm_excludedSNPs_withPC12_OR_noMAF_noambi_nodiscardable_overlapped.txt \
+/data/PRSoS_common/Shantala/trainSet_excludedSNPs_noambi.gen > \
+Shantala/trainSet_excludedSNPs_noambi_overlapped.gen
 
 
-# Step 6: clump preparation
+X# Step 6: clump preparation
 cat <(echo "SNP P") <(awk '{print $1,$2}' GWAS_Shantala_AAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped.txt) > \
 TO_DISCARD_GWAS_Shantala_AAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped_pval.txt
 
@@ -69,7 +77,7 @@ TO_DISCARD_GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable
 # (also convert VCF or GEN to PLINK files (.bed/.bim/.fam) if you have not already done so)
 
 
-# Step 7: clump (not in docker, but need to sudo)
+X# Step 7: clump (not in docker, but need to sudo)
 plink --bfile /storage/fk-master/data/PRSoS_common/Shantala/AA_trainSet_excludedSNPs \
 --clump /storage/fk-master/data/PRS-on-SPARK-MK/TO_DISCARD_GWAS_Shantala_AAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped_pval.txt \
 --clump-p1 1 --clump-p2 1 --clump-kb 500 --clump-r2 0.2 \
@@ -81,7 +89,7 @@ plink --bfile /storage/fk-master/data/PRSoS_common/Shantala/EA_trainSet_excluded
 --out /storage/fk-master/data/PRS-on-SPARK-MK/TO_DISCARD_GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped
 
 
-# Step 8: extract clumped SNPs from GWAS
+X# Step 8: extract clumped SNPs from GWAS
 cat <(head -1 /data/PRSoS_common/Shantala/GWAS_trainOR_excludedSNPs_noMAF.txt) \
 <(awk 'NR==FNR {FILE1[$3]=$0; next} ($1 in FILE1) {print $0}' \
 TO_DISCARD_GWAS_Shantala_AAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped.clumped \
@@ -97,9 +105,9 @@ GWAS_Shantala_EAtrainOR_excludedSNPs_noMAF_nodup_noambi_nodiscardable_overlapped
 
 
 
-##TAKE ETHNIC INTERSECTION FIRST THEN RUN PRSoS.
+X##TAKE ETHNIC INTERSECTION FIRST THEN RUN PRSoS.
 
-###Edit frm here!!!
+
 ### Step 11: run PRSoS (final step; use whichever thresholds you need)
 spark-submit PRS_run.py \
 /data/PRSoS_common/Shantala/trainSet.gen /data/PRSoS_common/Shantala/EA_AA_GWAS_commonSNP.txt PRS-Sus-trainSet_commonSNP \
