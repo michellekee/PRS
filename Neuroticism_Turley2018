@@ -8,5 +8,7 @@ Rscript PRSice.R --dir . \
     --binary-target F \
     --snp MarkerName --chr CHR --bp POS --A1 A1 --A2 A2 --stat Beta --pvalue Pval \
     --clump-p 1 --clump-kb 500 --clump-r2 0.2 \
+    --pheno-file /home/michelle/AllEthnicIntersection.pheno \
+    --no-regress \
     --out GUSTO_Neuroticism_Turley2018
  
