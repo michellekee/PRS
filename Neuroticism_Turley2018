@@ -5,8 +5,8 @@ Rscript PRSice.R --dir . \
     --thread 8 \
     --stat BETA \
     --beta \
-    --binary-target F
-    --snp 0 --chr 1 --bp 2 --A1 3 --A2 4 --stat 5 --se 6 --pvalue 7 --index
-    --clump-p 1 --clump-kb 500 --clump-r2 0.2 
+    --binary-target F \
+    --snp MarkerName --chr CHR --bp POS --A1 A1 --A2 A2 --stat Beta --pvalue Pval \
+    --clump-p 1 --clump-kb 500 --clump-r2 0.2 \
     --out GUSTO_Neuroticism_Turley2018
  
