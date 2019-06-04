@@ -1,0 +1,12 @@
+Rscript PRSice.R --dir . \
+    --prsice ./PRSice \
+    --base /home/michelle/GWAS_NEUR_full.txt \
+    --target /storage/fk-master/data/PRSoS_common/GUSTO_plink_binaryFiles/GUSTO_INFO08_nodup_noambi_autosomes_plink_binary/GUSTO_INFO08_nodup_noambi_autosomes \
+    --thread 8 \
+    --stat BETA \
+    --beta \
+    --binary-target F
+    --snp 0 --chr 1 --bp 2 --A1 3 --A2 4 --stat 5 --se 6 --pvalue 7 --index
+    --clump-p 1 --clump-kb 500 --clump-r2 0.2 
+    --out GUSTO_Neuroticism_Turley2018
+ 
