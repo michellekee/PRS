@@ -11,4 +11,21 @@ Rscript PRSice.R --dir . \
     --pheno-file /home/michelle/AllEthnicIntersection.pheno \
     --no-regress \
     --out GUSTO_Neuroticism_Turley2018
+    
+    
+    ## With proper phenotype file
+    Rscript PRSice.R --dir . \
+    --prsice ./PRSice \
+    --base /home/michelle/GWAS_NEUR_full.txt \
+    --target /storage/fk-master/data/PRSoS_common/GUSTO_plink_binaryFiles/GUSTO_INFO08_nodup_noambi_autosomes_plink_binary/GUSTO_INFO08_nodup_noambi_autosomes \
+    --thread 8 \
+    --stat BETA \
+    --beta \
+    --binary-target F \
+    --snp MarkerName --chr CHR --bp POS --A1 A1 --A2 A2 --stat Beta --pvalue Pval \
+    --clump-p 1 --clump-kb 500 --clump-r2 0.2 \
+    --pheno /home/michelle/AllEthnicIntersection_neuroMother2.pheno \
+    --cov /home/michelle/AllEthnicIntersection_neuroMother.cov \
+    --cov-col mother_PC1,mother_PC2 \
+    --out GUSTO_Neuroticism_Turley2018_output_$(date +%y%m%d)
  
