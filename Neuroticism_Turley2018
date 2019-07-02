@@ -30,12 +30,3 @@ Rscript PRSice.R --dir . \
     --out GUSTO_Neuroticism_Turley2018_output_$(date +%y%m%d)
  
  
- # Step 1: customize full GWAS (to be like: SNP, P, BETA, A1, A2)
-cd /home/michelle/
-awk -v OFS='\t' '{print $1,$8,$6,$4,$5}' GWAS_NEUR_full.txt > GWAS_Neuroticism_Full.txt
-
-# Step 2: run PRSoS to produce the SNP log (use all SNPs and print the SNP log, i.e., --thresholds 1 --snp_log)
-
-spark-submit PRS_run.py /data/PRSoS_common/GUSTO_INFO08_nodup_noambi_autosomes.gen /home/michelle/GWAS_Neuroticism_Full.txt \
-Discard_For_Clumping_Neuroticism_Full --sample_file /data/PRSoS_common/AllEthnicIntersection.sample \
---filetype GEN --GWAS_delim "\t" --thresholds 1 --no_maf --snp_log 
